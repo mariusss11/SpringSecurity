@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.exception.DuplicateUsernameException;
 import com.example.demo.model.Role;
 import com.example.demo.model.User;
 import com.example.demo.repository.RoleRepository;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -36,6 +38,10 @@ public class UserService {
     @Autowired
     JWTService jwtService;
 
+    /**
+     *
+     * @return all the users
+     */
     public List<User> getAll() {
         return userRepo.findAll();
     }
@@ -64,7 +70,18 @@ public class UserService {
         return "Fail";
     }
 
-    public void register(User user){
+    /**
+     * This method checks if the username is already in the db,
+     * if it is it throws the error, if not, saves it
+     * @param user the user we want to register
+     * @throws DuplicateUsernameException the username needs to be unique
+     */
+    public void register(User user) throws DuplicateUsernameException {
+        Optional<User> userOptional = Optional.ofNullable(userRepo.findByUsername(user.getUsername()));
+        if (userOptional.isPresent()) {
+            throw new DuplicateUsernameException("Username is already taken");
+        }
+
         user.setPassword(encoder.encode(user.getPassword()));
 
         if (user.getRoles() != null && !user.getRoles().isEmpty()) {

@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.dto.RoleDTO;
 import com.example.demo.dto.UserDTO;
+import com.example.demo.exception.DuplicateUsernameException;
 import com.example.demo.model.Role;
 import com.example.demo.model.User;
 import com.example.demo.service.UserService;
@@ -24,9 +25,9 @@ public class UserController {
 
     /**
      * NOTES
-     * Need to take care about user's permissions and what can they do
-     * Verify all the function
-     * Verify STACKOVERFLOW for answers
+     * Verify the tests
+     * Something is wrong during the encryption
+     * Check STACKOVERFLOW for answers
      */
 
 
@@ -35,7 +36,12 @@ public class UserController {
         return userService.getAll();
     }
 
-//    USING DTO
+
+    /**
+     * Using UserDTO, I manipulate the info I want to output
+     * whenever someone acces this endpoint
+     * @return all the users in the db
+     */
     @GetMapping(path = "/usersDTO")
     public List<UserDTO> getUsersDTO(){
         List<User> users = userService.getAll();
@@ -62,8 +68,16 @@ public class UserController {
     }
 
 
+    /**
+     * This method helps us to register new users <br>
+     *  If the user's role is just USER, you don't need to specify it,
+     * it will be as default
+     * @param user the user I want to register
+     * @throws DuplicateUsernameException the username needs to be unique <br>
+     *
+     */
     @PostMapping("/register")
-    public void register(@RequestBody User user){
+    public void register(@RequestBody User user) throws DuplicateUsernameException {
         userService.register(user);
     }
 

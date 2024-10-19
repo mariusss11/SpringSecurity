@@ -7,6 +7,7 @@ import lombok.Setter;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.Collection;
 
 @Entity
@@ -85,4 +86,19 @@ public class User {
                 ", role='" + roles + '\'' +
                 '}';
     }
+
+    public void validateName() {
+        if (this.username == null || this.username.isBlank() || !this.username.matches("[a-zA-Z\\s]+")) {
+            throw new IllegalArgumentException("Invalid Name");
+        }
+    }
+
+    public void validatePassword() {
+        String regex ="(?=.*[@#$%^&+=])";
+        if (this.password == null || this.password.isBlank() || !this.password.matches(regex)) {
+            throw new IllegalArgumentException("Invalid Password: must contain at least one special character.");
+        }
+    }
+
+
 }
