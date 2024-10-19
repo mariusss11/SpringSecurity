@@ -23,6 +23,13 @@ public class Role {
     @JsonIgnore //Prevent recursive serialization
     private Collection<User> users;
 
+    public Role() {
+    }
+
+    public Role(String name) {
+        this.name = name;
+    }
+
     public int getId() {
         return id;
     }

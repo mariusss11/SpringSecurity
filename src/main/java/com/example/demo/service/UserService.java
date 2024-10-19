@@ -36,9 +36,15 @@ public class UserService {
     @Autowired
     JWTService jwtService;
 
-    public List<User> getAll(){
+    public List<User> getAll() {
         return userRepo.findAll();
     }
+
+//    public List<User> getUsers() {
+//        List<User> users = getAll();
+//        users.forEach(user -> System.out.println(user.toString()));
+//        return users;
+//    }
 
     /**
      * We are manually getting the info of the user
@@ -73,8 +79,15 @@ public class UserService {
                     System.out.println("Role not found: " + role.getName());
             }
             user.setRoles(roles); // Set the role during the registration
+        } else {
+            Role defaultRole = new Role("USER");
+            Collection<Role> roles = new ArrayList<>();
+            roles.add(defaultRole);
+            user.setRoles(roles);
         }
         // Save the user to the database
         userRepo.save(user);
     }
+
+
 }
