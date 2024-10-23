@@ -24,6 +24,7 @@ public class UserService {
 
     private final RoleRepository roleRepo;
 
+
     @Autowired
     public UserService(UserRepository userRepo, RoleRepository roleRepo) {
         this.userRepo = userRepo;
@@ -58,7 +59,7 @@ public class UserService {
      * @param user this is the user that we are verifying
      * @return Provide the JWT else "Fail"
      */
-    public String verify(User user) {
+    public String login(User user) {
         Authentication authentication = authManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         user.getUsername(),user.getPassword()));
@@ -76,12 +77,12 @@ public class UserService {
      * @param user the user we want to register
      * @throws DuplicateUsernameException the username needs to be unique
      */
-    public void register(User user) throws DuplicateUsernameException {
+    public void register(User user) throws IllegalStateException, DuplicateUsernameException {
         Optional<User> userOptional = Optional.ofNullable(userRepo.findByUsername(user.getUsername()));
         if (userOptional.isPresent()) {
             throw new DuplicateUsernameException("Username is already taken");
         }
-
+        validateUser(user);
         user.setPassword(encoder.encode(user.getPassword()));
 
         if (user.getRoles() != null && !user.getRoles().isEmpty()) {
@@ -104,6 +105,11 @@ public class UserService {
         }
         // Save the user to the database
         userRepo.save(user);
+    }
+
+    private void validateUser(User user) throws IllegalStateException{
+        user.validateName();
+        user.validatePassword();
     }
 
 

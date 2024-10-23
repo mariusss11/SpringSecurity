@@ -87,15 +87,16 @@ public class User {
                 '}';
     }
 
+
     public void validateName() {
         if (this.username == null || this.username.isBlank() || !this.username.matches("[a-zA-Z\\s]+")) {
             throw new IllegalArgumentException("Invalid Name");
         }
     }
 
+    //todo make the validatePassword work and verify if the pw contains different special characters
     public void validatePassword() {
-        String regex ="(?=.*[@#$%^&+=])";
-        if (this.password == null || this.password.isBlank() || !this.password.matches(regex)) {
+        if (this.password == null || this.password.isBlank() || !this.password.contains("@")) {
             throw new IllegalArgumentException("Invalid Password: must contain at least one special character.");
         }
     }

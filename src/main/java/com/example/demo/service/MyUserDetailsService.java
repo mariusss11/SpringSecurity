@@ -26,7 +26,6 @@ public class MyUserDetailsService implements UserDetailsService {
             System.out.println("User Not Found");
             throw new UsernameNotFoundException("user not found");
         }
-
         return new UserPrincipal(user);
     }
 }

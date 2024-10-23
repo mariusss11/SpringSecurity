@@ -24,8 +24,13 @@ public class UserDTO {
     @JsonProperty("user_name")
     */
     private String username;
-//    private String password;
+    private String password;
     private List<RoleDTO> roles;
+
+    public UserDTO(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
 
     public UserDTO(int id, String username, List<RoleDTO> roles) {
         this.id = id;
@@ -48,6 +53,14 @@ public class UserDTO {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public List<RoleDTO> getRoles() {

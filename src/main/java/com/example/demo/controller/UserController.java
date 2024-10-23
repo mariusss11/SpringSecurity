@@ -6,9 +6,12 @@ import com.example.demo.exception.DuplicateUsernameException;
 import com.example.demo.model.Role;
 import com.example.demo.model.User;
 import com.example.demo.service.UserService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.naming.AuthenticationException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -30,6 +33,9 @@ public class UserController {
      * Check STACKOVERFLOW for answers
      */
 
+    /**
+     * @return all the users in the database
+     */
 
     @GetMapping(path = "/users")
     public List<User> getUsers(){
@@ -39,7 +45,7 @@ public class UserController {
 
     /**
      * Using UserDTO, I manipulate the info I want to output
-     * whenever someone acces this endpoint
+     * whenever someone access this endpoint
      * @return all the users in the db
      */
     @GetMapping(path = "/usersDTO")
@@ -59,12 +65,17 @@ public class UserController {
     /**
      * Login form
      * @param user the user we are trying to log in with
-     * @return JWT
+     * @return JWTS
      */
     @PostMapping("/login")
-    public String login(@RequestBody User user){
-        System.out.println(user);
-        return userService.verify(user);
+    public ResponseEntity<String> login(@RequestBody User user){
+        try {
+            String token = userService.login(user);
+            System.out.println(user);
+            return ResponseEntity.ok(token);
+        } catch (Exception e){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
+        }
     }
 
 

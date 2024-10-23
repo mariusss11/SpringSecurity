@@ -3,6 +3,8 @@ package com.example.demo.model;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Objects;
+
 @Setter
 @Getter
 public class Student {
@@ -39,4 +41,19 @@ public class Student {
                 ", studentName='" + studentName + '\'' +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Student student = (Student) o;
+        return studentId == student.studentId && Objects.equals(studentName, student.studentName);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(studentId, studentName);
+    }
+
+
 }
