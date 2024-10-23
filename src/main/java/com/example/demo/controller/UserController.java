@@ -67,11 +67,11 @@ public class UserController {
      * @param user the user we are trying to log in with
      * @return JWTS
      */
-    @PostMapping("/login")
+    @PostMapping()
     public ResponseEntity<String> login(@RequestBody User user){
         try {
             String token = userService.login(user);
-            System.out.println(user);
+            System.out.println(user); //production phase only
             return ResponseEntity.ok(token);
         } catch (Exception e){
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");

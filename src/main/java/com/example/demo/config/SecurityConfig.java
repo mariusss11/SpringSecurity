@@ -51,9 +51,11 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)  // Disable CSRF
                 // Allow public access
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("/register", "/login").permitAll()
+                        .requestMatchers("/register", "/login", "/").permitAll()
                         .anyRequest().authenticated())
                 .httpBasic(Customizer.withDefaults()) // Enable Basic Auth
+//                .sessionManagement(session ->
+//                        session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))  // Enable stateful sessions
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(
                                 SessionCreationPolicy.STATELESS)) // Stateless session
